@@ -19,7 +19,7 @@ export default function ProfilePage() {
 
   const fetchUser = async () => {
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
+    if (!session || !session.user?.email) {
       window.location.href = "/login";
       return;
     }
