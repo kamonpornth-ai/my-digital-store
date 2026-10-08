@@ -1,51 +1,52 @@
 {
-    "name":  "my-digital-store",
-    "version":  "0.1.0",
-    "private":  true,
-    "scripts":  {
-                    "dev":  "next dev",
-                    "build":  "next build",
-                    "start":  "next start",
-                    "lint":  "eslint",
-                    "build:electron":  "next build \u0026\u0026 electron-builder",
-                    "dev:electron":  "next build \u0026\u0026 electron ."
-                },
-    "dependencies":  {
-                         "@supabase/supabase-js":  "^2.117.2",
-                         "next":  "16.3.8",
-                         "react":  "19.2.8",
-                         "react-dom":  "19.2.8"
-                     },
-    "devDependencies":  {
-                            "@tailwindcss/postcss":  "^4.3.3",
-                            "@types/node":  "^20",
-                            "@types/react":  "^19",
-                            "@types/react-dom":  "^19",
-                            "autoprefixer":  "^10.6.1",
-                            "concurrently":  "^10.0.5",
-                            "electron":  "^44.7.0",
-                            "electron-builder":  "^26.15.3",
-                            "electron-serve":  "^3.0.1",
-                            "eslint":  "^9",
-                            "eslint-config-next":  "16.3.8",
-                            "postcss":  "^8.5.28",
-                            "tailwindcss":  "^4.3.3",
-                            "typescript":  "^5",
-                            "wait-on":  "^9.5.1"
-                        },
-    "build":  {
-                  "appId":  "com.kamonpornth.digitalstore",
-                  "productName":  "Digital Store",
-                  "directories":  {
-                                      "output":  "dist"
-                                  },
-                  "files":  [
-                                "out/**/*",
-                                "electron/**/*"
-                            ],
-                  "win":  {
-                              "target":  "nsis"
-                          }
-              },
-    "main":  "electron/main.js"
+    "name": "my-digital-store",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "eslint",
+        "build:electron": "next build && electron-builder",
+        "dev:electron": "next build && electron ."
+    },
+    "dependencies": {
+        "@ducanh2912/next-pwa": "^10.2.9",
+        "@supabase/supabase-js": "^2.117.2",
+        "electron-serve": "^3.0.1",
+        "next": "16.3.8",
+        "react": "19.2.8",
+        "react-dom": "19.2.8"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4.3.3",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "autoprefixer": "^10.6.1",
+        "concurrently": "^10.0.5",
+        "electron": "^44.7.0",
+        "electron-builder": "^26.15.3",
+        "eslint": "^9",
+        "eslint-config-next": "16.3.8",
+        "postcss": "^8.5.28",
+        "tailwindcss": "^4.3.3",
+        "typescript": "^5",
+        "wait-on": "^9.5.1"
+    },
+    "build": {
+        "appId": "com.kamonpornth.digitalstore",
+        "productName": "Digital Store",
+        "directories": {
+            "output": "dist"
+        },
+        "files": [
+            "out/**/*",
+            "electron/**/*"
+        ],
+        "win": {
+            "target": "nsis"
+        }
+    },
+    "main": "electron/main.js"
 }

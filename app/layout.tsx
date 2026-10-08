@@ -11,6 +11,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Digital Store",
   description: "Cross-Platform E-Commerce",
+  manifest: "/manifest.json",
+};
+
+export const viewport = {
+  themeColor: "#1e3a8a",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
