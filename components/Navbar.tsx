@@ -83,9 +83,9 @@ export default function Navbar() {
                     ⚙️ Dashboard
                   </Link>
                 )}
-                <span className="text-xs sm:text-sm font-bold text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full hidden sm:inline-block">
+                <Link href="/profile" className="text-xs sm:text-sm font-bold text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full hidden sm:inline-block hover:bg-gray-200 hover:text-blue-900 transition">
                   {user.email}
-                </span>
+                </Link>
                 <button onClick={handleLogout} className="bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-bold hover:bg-red-100 transition shadow-sm">
                   Logout
                 </button>
