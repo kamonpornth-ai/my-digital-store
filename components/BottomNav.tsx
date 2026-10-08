@@ -11,7 +11,7 @@ export default function BottomNav() {
         </Link>
         
         {/* ลิงก์ไปหน้า Favorite */}
-        <Link href="/favorite" className="text-gray-400 hover:text-blue-900 flex flex-col items-center">
+        <Link href="/fav" className="text-gray-400 hover:text-blue-900 flex flex-col items-center">
           <span className="text-xs font-medium">Favorite</span>
         </Link>
         
