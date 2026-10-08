@@ -16,12 +16,12 @@ export default function BottomNav() {
         </Link>
         
         {/* ปุ่ม Cart ตรงกลาง  */}
-        <Link href="#" className="bg-blue-900 text-white w-14 h-14 rounded-full flex items-center justify-center absolute -top-5 left-1/2 transform -translate-x-1/2 shadow-lg border-4 border-gray-50">
+        <Link href="/cart" className="bg-blue-900 text-white w-14 h-14 rounded-full flex items-center justify-center absolute -top-5 left-1/2 transform -translate-x-1/2 shadow-lg border-4 border-gray-50">
           🛒
         </Link>
         
          {/*  Notification (แจ้งเตือน)  */}
-        <Link href="#" className="text-gray-400 hover:text-blue-900 flex flex-col items-center">
+        <Link href="/cart" className="text-gray-400 hover:text-blue-900 flex flex-col items-center">
           <span className="text-xs font-medium">Notify</span>
         </Link>
         
