@@ -133,11 +133,7 @@ export default function ProfilePage() {
         <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col mb-20">
           <button onClick={() => setIsEditing(true)} className="text-left p-5 border-b border-gray-50 hover:bg-gray-50 transition font-medium text-gray-700">⚙️ Account Settings</button>
           
-          <button className="text-left p-5 border-b border-gray-50 hover:bg-gray-50 transition font-medium text-gray-700 flex justify-between items-center cursor-default">
-            <span>🌐 Language</span>
-            <span className="text-blue-600 font-bold bg-blue-50 px-3 py-1 rounded-full text-xs">ภาษาไทย</span>
-          </button>
-          
+
           <button onClick={handleLogout} className="text-left p-5 hover:bg-red-50 text-red-500 transition font-bold">🚪 Log Out</button>
         </div>
       )}
