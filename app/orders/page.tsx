@@ -23,7 +23,7 @@ export default function OrdersPage() {
     const { data, error } = await supabase
       .from("orders")
       .select("*")
-      .eq("user_id", session.user.id)
+      .eq("user_email", session.user.email)
       .order("created_at", { ascending: false });
 
     if (data) setOrders(data);
@@ -62,7 +62,7 @@ export default function OrdersPage() {
               </div>
               
               <div className="space-y-4">
-                {order.cart_items && order.cart_items.map((item: any, idx: number) => (
+                {order.items && order.items.map((item: any, idx: number) => (
                   <div key={idx} className="flex flex-col sm:flex-row justify-between sm:items-center bg-gray-50 p-4 rounded-lg gap-4">
                     <div className="flex items-center gap-4">
                       <img src={item.image_url} alt={item.title} className="w-16 h-16 rounded object-cover shadow-sm" />
