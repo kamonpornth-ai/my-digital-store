@@ -23,6 +23,19 @@ export default function AdminPage() {
   const [totalOrders, setTotalOrders] = useState(0);
   const [allOrders, setAllOrders] = useState<any[]>([]);
 
+  // คำนวณสรุปยอดขายแยกตามสินค้า
+  const productSalesMap: Record<string, { title: string; quantity: number; revenue: number }> = {};
+  allOrders.forEach(order => {
+    order.items?.forEach((item: any) => {
+      if (!productSalesMap[item.id]) {
+        productSalesMap[item.id] = { title: item.title, quantity: 0, revenue: 0 };
+      }
+      productSalesMap[item.id].quantity += item.quantity;
+      productSalesMap[item.id].revenue += (item.price * item.quantity);
+    });
+  });
+  const bestSellers = Object.values(productSalesMap).sort((a, b) => b.quantity - a.quantity);
+
   useEffect(() => {
     checkAdmin();
     fetchProducts();
@@ -165,6 +178,38 @@ export default function AdminPage() {
         <div className="bg-gradient-to-br from-orange-500 to-orange-400 rounded-3xl p-6 text-white shadow-lg shadow-orange-500/20">
           <p className="text-orange-100 font-bold mb-1">จำนวนสินค้าในระบบ</p>
           <h2 className="text-4xl font-black">{products.length} <span className="text-lg font-medium">ชิ้น</span></h2>
+        </div>
+      </div>
+
+      {/* 🏆 Best Sellers (Product Sales Breakdown) */}
+      <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 mb-10 overflow-hidden">
+        <h2 className="text-xl font-bold text-gray-800 mb-6">🏆 สรุปยอดขายแยกตามสินค้า</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm text-gray-600">
+            <thead className="bg-blue-50 text-blue-900 font-bold">
+              <tr>
+                <th className="px-4 py-3 rounded-l-xl">อันดับ</th>
+                <th className="px-4 py-3">ชื่อสินค้า</th>
+                <th className="px-4 py-3">ขายได้ทั้งหมด (ชิ้น)</th>
+                <th className="px-4 py-3 rounded-r-xl">รายได้รวม</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {bestSellers.map((product, idx) => (
+                <tr key={idx} className="hover:bg-gray-50 transition">
+                  <td className="px-4 py-4 font-bold text-gray-800">#{idx + 1}</td>
+                  <td className="px-4 py-4 font-medium text-gray-800">{product.title}</td>
+                  <td className="px-4 py-4 font-bold text-green-600">{product.quantity} ชิ้น</td>
+                  <td className="px-4 py-4 font-bold text-blue-600">${product.revenue}</td>
+                </tr>
+              ))}
+              {bestSellers.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="text-center py-8 text-gray-400">ยังไม่มีสินค้าที่ขายได้</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
 
