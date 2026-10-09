@@ -21,6 +21,7 @@ export default function AdminPage() {
   // Sales Dashboard State
   const [totalSales, setTotalSales] = useState(0);
   const [totalOrders, setTotalOrders] = useState(0);
+  const [allOrders, setAllOrders] = useState<any[]>([]);
 
   useEffect(() => {
     checkAdmin();
@@ -29,8 +30,9 @@ export default function AdminPage() {
   }, []);
 
   const fetchSales = async () => {
-    const { data, error } = await supabase.from('orders').select('total_price');
+    const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
     if (data) {
+      setAllOrders(data);
       setTotalOrders(data.length);
       const sum = data.reduce((acc, order) => acc + (order.total_price || 0), 0);
       setTotalSales(sum);
@@ -163,6 +165,48 @@ export default function AdminPage() {
         <div className="bg-gradient-to-br from-orange-500 to-orange-400 rounded-3xl p-6 text-white shadow-lg shadow-orange-500/20">
           <p className="text-orange-100 font-bold mb-1">จำนวนสินค้าในระบบ</p>
           <h2 className="text-4xl font-black">{products.length} <span className="text-lg font-medium">ชิ้น</span></h2>
+        </div>
+      </div>
+
+      {/* 📦 Recent Orders List */}
+      <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 mb-10 overflow-hidden">
+        <h2 className="text-xl font-bold text-gray-800 mb-6">📜 รายการสั่งซื้อล่าสุด</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm text-gray-600">
+            <thead className="bg-gray-50 text-gray-700 font-bold">
+              <tr>
+                <th className="px-4 py-3 rounded-l-xl">รหัสสั่งซื้อ</th>
+                <th className="px-4 py-3">อีเมลลูกค้า</th>
+                <th className="px-4 py-3">สินค้าที่ซื้อ</th>
+                <th className="px-4 py-3">ยอดรวม</th>
+                <th className="px-4 py-3 rounded-r-xl">วันที่</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {allOrders.slice(0, 10).map((order) => (
+                <tr key={order.id} className="hover:bg-gray-50 transition">
+                  <td className="px-4 py-4 font-mono text-xs">{order.id.toString().slice(0, 8)}</td>
+                  <td className="px-4 py-4 font-medium text-gray-800">{order.user_email}</td>
+                  <td className="px-4 py-4">
+                    <ul className="list-disc pl-4">
+                      {order.items?.map((item: any, idx: number) => (
+                        <li key={idx} className="line-clamp-1">{item.title} (x{item.quantity})</li>
+                      ))}
+                    </ul>
+                  </td>
+                  <td className="px-4 py-4 font-bold text-blue-600">${order.total_price}</td>
+                  <td className="px-4 py-4">
+                    {new Date(order.created_at).toLocaleDateString('th-TH')}
+                  </td>
+                </tr>
+              ))}
+              {allOrders.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="text-center py-8 text-gray-400">ยังไม่มีรายการสั่งซื้อ</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
 
