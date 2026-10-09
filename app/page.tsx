@@ -36,6 +36,7 @@ function ProductGrid() {
   
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -54,17 +55,34 @@ function ProductGrid() {
     fetchProducts();
   }, [category]);
 
+  const filteredProducts = products.filter(p => 
+    p.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
-      <h2 className="text-2xl font-black text-blue-900 mb-6 flex items-center gap-2">
-        {category ? ` ${category}` : " สินค้าทั้งหมด"}
-      </h2>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+        <h2 className="text-2xl font-black text-blue-900 flex items-center gap-2">
+          {category ? ` ${category}` : " สินค้าทั้งหมด"}
+        </h2>
+        
+        <div className="relative w-full sm:w-72">
+          <input 
+            type="text" 
+            placeholder="ค้นหาสินค้า..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-white border border-gray-200 rounded-full px-5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-900/20 transition shadow-sm"
+          />
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+        </div>
+      </div>
 
       {loading ? (
         <div className="text-center py-20 text-gray-400 font-bold">กำลังโหลดสินค้า...</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <div key={product.id} className="bg-white rounded-3xl p-4 shadow-sm border border-gray-100 flex flex-col group hover:shadow-xl transition duration-300">
               <Link href={`/product/${product.id}`}>
                 <div className="bg-gray-100 rounded-2xl h-56 mb-4 flex items-center justify-center overflow-hidden">
@@ -91,7 +109,7 @@ function ProductGrid() {
             </div>
           ))}
 
-          {products.length === 0 && (
+          {filteredProducts.length === 0 && (
             <div className="col-span-full text-center py-20 bg-gray-50 rounded-3xl border border-gray-100">
               <p className="text-xl font-bold text-gray-400 mb-2">ไม่พบสินค้าในหมวดหมู่นี้</p>
               <Link href="/" className="text-blue-600 hover:underline font-bold">กลับไปดูสินค้าทั้งหมด</Link>

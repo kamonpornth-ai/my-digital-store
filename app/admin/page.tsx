@@ -18,10 +18,24 @@ export default function AdminPage() {
     description: ""
   });
 
+  // Sales Dashboard State
+  const [totalSales, setTotalSales] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
+
   useEffect(() => {
     checkAdmin();
     fetchProducts();
+    fetchSales();
   }, []);
+
+  const fetchSales = async () => {
+    const { data, error } = await supabase.from('orders').select('total_price');
+    if (data) {
+      setTotalOrders(data.length);
+      const sum = data.reduce((acc, order) => acc + (order.total_price || 0), 0);
+      setTotalSales(sum);
+    }
+  };
 
   const checkAdmin = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -134,7 +148,23 @@ export default function AdminPage() {
 
   return (
     <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
-      <h1 className="text-3xl font-black text-blue-900 mb-8">Admin Dashboard ⚙️</h1>
+      <h1 className="text-3xl font-black text-blue-900 mb-6">Admin Dashboard ⚙️</h1>
+
+      {/* 📊 Sales Dashboard Widget */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div className="bg-gradient-to-br from-blue-900 to-blue-700 rounded-3xl p-6 text-white shadow-lg shadow-blue-900/20">
+          <p className="text-blue-100 font-bold mb-1">ยอดขายรวมทั้งหมด</p>
+          <h2 className="text-4xl font-black">${totalSales.toFixed(2)}</h2>
+        </div>
+        <div className="bg-gradient-to-br from-green-600 to-green-500 rounded-3xl p-6 text-white shadow-lg shadow-green-600/20">
+          <p className="text-green-100 font-bold mb-1">จำนวนคำสั่งซื้อ</p>
+          <h2 className="text-4xl font-black">{totalOrders} <span className="text-lg font-medium">รายการ</span></h2>
+        </div>
+        <div className="bg-gradient-to-br from-orange-500 to-orange-400 rounded-3xl p-6 text-white shadow-lg shadow-orange-500/20">
+          <p className="text-orange-100 font-bold mb-1">จำนวนสินค้าในระบบ</p>
+          <h2 className="text-4xl font-black">{products.length} <span className="text-lg font-medium">ชิ้น</span></h2>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         

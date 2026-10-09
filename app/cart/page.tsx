@@ -3,6 +3,7 @@ import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import Swal from "sweetalert2";
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, clearCart } = useCart();
@@ -10,34 +11,47 @@ export default function CartPage() {
 
   const totalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  // 🚀 ฟังก์ชันทำงานตอนกดปุ่มชำระเงิน
   const handleCheckout = async () => {
     setLoading(true);
-    // 1. เช็คว่าล็อกอินหรือยัง
     const { data: { session } } = await supabase.auth.getSession();
     
     if (!session) {
-      alert("🔒 กรุณาล็อกอินก่อนทำการชำระเงินครับ!");
-      window.location.href = "/login";
+      Swal.fire({
+        icon: 'warning',
+        title: 'ยังไม่ได้ล็อกอิน',
+        text: 'กรุณาล็อกอินก่อนทำการชำระเงินครับ!',
+        confirmButtonColor: '#1e3a8a'
+      }).then(() => {
+        window.location.href = "/login";
+      });
       return;
     }
 
-    // 2. เตรียมข้อมูลออเดอร์
     const orderPayload = {
       user_email: session.user.email,
       total_price: totalPrice,
-      items: items // เซฟข้อมูลตะกร้าลงฐานข้อมูล
+      items: items 
     };
 
-    // 3. ส่งเข้าตาราง orders
     const { error } = await supabase.from('orders').insert([orderPayload]);
 
     if (error) {
-      alert("❌ เกิดข้อผิดพลาด: " + error.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: error.message,
+        confirmButtonColor: '#1e3a8a'
+      });
     } else {
-      alert("🎉 สั่งซื้อสำเร็จ! ขอบคุณที่อุดหนุนครับ");
-      clearCart(); // ล้างตะกร้า
-      window.location.href = "/"; // กลับหน้าแรก
+      Swal.fire({
+        icon: 'success',
+        title: 'สั่งซื้อสำเร็จ! 🎉',
+        text: 'ขอบคุณที่อุดหนุนครับ ไปดาวน์โหลดไฟล์ที่หน้าประวัติได้เลย',
+        confirmButtonColor: '#1e3a8a'
+      }).then(() => {
+        clearCart(); 
+        window.location.href = "/orders"; 
+      });
     }
     setLoading(false);
   };
