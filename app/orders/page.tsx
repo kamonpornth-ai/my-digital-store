@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
@@ -32,14 +31,7 @@ export default function OrdersPage() {
   }
 
   const handleDownload = (productName: string) => {
-    Swal.fire({
-      icon: 'success',
-      title: 'ดาวน์โหลดสำเร็จ!',
-      text: `กำลังบันทึกไฟล์: ${productName} (โหมดจำลองสำหรับโปรเจกต์)`,
-      confirmButtonText: 'ตกลง',
-      confirmButtonColor: '#10b981',
-      timer: 3000
-    });
+    alert(`ดาวน์โหลดสำเร็จ!\nกำลังบันทึกไฟล์: ${productName} (โหมดจำลอง)`);
   };
 
   if (loading) return <div className="p-8 text-center text-gray-500 mt-20">กำลังโหลดประวัติการสั่งซื้อ...</div>;

@@ -3,7 +3,6 @@ import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
-import Swal from "sweetalert2";
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, clearCart } = useCart();
@@ -16,14 +15,8 @@ export default function CartPage() {
     const { data: { session } } = await supabase.auth.getSession();
     
     if (!session) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'ยังไม่ได้ล็อกอิน',
-        text: 'กรุณาล็อกอินก่อนทำการชำระเงินครับ!',
-        confirmButtonColor: '#1e3a8a'
-      }).then(() => {
-        window.location.href = "/login";
-      });
+      alert("กรุณาล็อกอินก่อนทำการชำระเงินครับ!");
+      window.location.href = "/login";
       return;
     }
 
@@ -36,22 +29,11 @@ export default function CartPage() {
     const { error } = await supabase.from('orders').insert([orderPayload]);
 
     if (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'เกิดข้อผิดพลาด',
-        text: error.message,
-        confirmButtonColor: '#1e3a8a'
-      });
+      alert("เกิดข้อผิดพลาด: " + error.message);
     } else {
-      Swal.fire({
-        icon: 'success',
-        title: 'สั่งซื้อสำเร็จ! 🎉',
-        text: 'ขอบคุณที่อุดหนุนครับ ไปดาวน์โหลดไฟล์ที่หน้าประวัติได้เลย',
-        confirmButtonColor: '#1e3a8a'
-      }).then(() => {
-        clearCart(); 
-        window.location.href = "/orders"; 
-      });
+      alert("สั่งซื้อสำเร็จ! 🎉 ขอบคุณที่อุดหนุนครับ ไปดาวน์โหลดไฟล์ที่หน้าประวัติได้เลย");
+      clearCart(); 
+      window.location.href = "/orders"; 
     }
     setLoading(false);
   };
