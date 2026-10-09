@@ -131,9 +131,9 @@ export default function ProfilePage() {
         </div>
       ) : (
         <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col mb-20">
+          <Link href="/orders" className="text-left p-5 border-b border-gray-50 hover:bg-gray-50 transition font-medium text-gray-700">📦 ประวัติการสั่งซื้อ & ดาวน์โหลด</Link>
           <button onClick={() => setIsEditing(true)} className="text-left p-5 border-b border-gray-50 hover:bg-gray-50 transition font-medium text-gray-700">⚙️ Account Settings</button>
           
-
           <button onClick={handleLogout} className="text-left p-5 hover:bg-red-50 text-red-500 transition font-bold">🚪 Log Out</button>
         </div>
       )}
